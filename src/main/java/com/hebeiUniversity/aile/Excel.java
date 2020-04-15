@@ -30,7 +30,6 @@ public class Excel {
             String line = null;
             while((line=reader.readLine())!=null){
                 String item[] = line.split(",");//CSV格式文件为逗号分隔符文件，这里根据逗号切分
-                System.out.println(item[0]);
                 list.add(Double.parseDouble(item[0]));
             }
         } catch (Exception  e){
