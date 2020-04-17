@@ -72,6 +72,7 @@ public class LOF {
                 try {
                     reader.close();
                 } catch (IOException e1) {
+                    System.out.println("关闭失败");
                 }
             }
         }
