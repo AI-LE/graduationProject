@@ -6,10 +6,7 @@ package com.hebeiUniversity.aile;
  */
 import java.io.*;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-
+import java.util.*;
 
 
 public class Excel {
@@ -22,6 +19,33 @@ public class Excel {
         for (int i = 0;i < list.size();i++){
             excel.distanceK(list, i);
         }
+    }
+    //    独热编码，对某一列进行编码
+    public static ArrayList<String> oneHot(ArrayList<String> list, int index) throws Exception {
+
+//      建立键值
+        HashSet<String> set = new HashSet<>();
+        for (String l : list) {
+            set.add(l.split(",")[index]);
+        }
+        System.out.println("键值总数：");
+        System.out.println(set.size());
+
+//        为键值映射数组下表
+        HashMap<String, Integer> toIndex = new HashMap<>();
+        int ind = 0;
+        for (String a : set) {
+            toIndex.put(a, ind);
+            ind++;
+        }
+//      开始编码
+        for (int i=0; i<list.size(); i++) {
+            int a[] = new int[set.size()];
+            a[ toIndex.get( list.get(i).split(",")[index] ) ] = 1;
+//            list.set(i, list.get(i) + ","+array2string(a));
+        }
+
+        return list;
     }
 
     private void distanceK(List<Sample> list, int index){
