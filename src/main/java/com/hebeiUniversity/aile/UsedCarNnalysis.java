@@ -9,15 +9,15 @@ import java.io.*;
 import java.util.*;
 
 
-public class Excel {
+public class UsedCarNnalysis {
 
     public static void main(String[] args) throws Exception  {
-        Excel excel = new Excel();
+        UsedCarNnalysis usedCarNnalysis = new UsedCarNnalysis();
         //获取检测样本
-        List<Sample> list = excel.readFile("汽车价格离群值检测/dataset/accord_sedan_testing.csv");
+        List<Sample> list = usedCarNnalysis.readFile("汽车价格离群值检测/dataset/accord_sedan_testing.csv");
         //求每个样本值的第K距离
         for (int i = 0;i < list.size();i++){
-            excel.distanceK(list, i);
+            usedCarNnalysis.distanceK(list, i);
         }
     }
     //    独热编码，对某一列进行编码
