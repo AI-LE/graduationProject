@@ -16,6 +16,19 @@ public class OneHotSample {
     private Integer transmissionManual;
     private Integer transmissionAutomatic;
 
+    /**
+     * 初始化非数值化的 全为0
+     */
+    public OneHotSample() {
+        trimEx = 0;
+        trimLx = 0;
+        trimExl = 0;
+        engine4Cyl = 0;
+        engine6Cyl = 0;
+        transmissionManual = 0;
+        transmissionAutomatic = 0;
+    }
+
     public Integer getPrice() {
         return price;
     }
@@ -94,5 +107,21 @@ public class OneHotSample {
 
     public void setTransmissionAutomatic(Integer transmissionAutomatic) {
         this.transmissionAutomatic = transmissionAutomatic;
+    }
+
+    @Override
+    public String toString() {
+        return "OneHotSample{" +
+                "price=" + price +
+                ", mileage=" + mileage +
+                ", year=" + year +
+                ", trimEx=" + trimEx +
+                ", trimLx=" + trimLx +
+                ", trimExl=" + trimExl +
+                ", engine4Cyl=" + engine4Cyl +
+                ", engine6Cyl=" + engine6Cyl +
+                ", transmissionManual=" + transmissionManual +
+                ", transmissionAutomatic=" + transmissionAutomatic +
+                '}';
     }
 }

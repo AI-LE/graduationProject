@@ -209,13 +209,13 @@ public class NewLOF {
 				for (int i = 0; i < this.numAttributes; i++) {  
 					distance += Math.abs(first[i] - second[i]) / (maxTrain[i] - minTrain[i]);
 				}
-		
+				break;
 			case EUCLIDIAN:
 				for (int i = 0; i < this.numAttributes; i++) {  
 					distance += Math.pow(first[i] - second[i], 2);
 				}
 				distance = Math.sqrt(distance);
-
+				break;
 			default:
 				break;
 			
@@ -244,10 +244,11 @@ public class NewLOF {
 		
 		// if there are more neighbors with the same distance, take them too
 		for (int i = kNN; i < distTable.length - 1; i++) {
-			if (distTable[instIndex][distSorted[instIndex][i]] == distTable[instIndex][distSorted[instIndex][i+1]])
+			if (distTable[instIndex][distSorted[instIndex][i]] == distTable[instIndex][distSorted[instIndex][i+1]]) {
 				numNN++;
-			else
+			} else {
 				break;
+			}
 		}
  
 		return numNN;

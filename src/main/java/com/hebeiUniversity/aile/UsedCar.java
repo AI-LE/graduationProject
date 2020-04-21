@@ -5,13 +5,16 @@ package com.hebeiUniversity.aile;
  * @date 2020/4/20 22:43
  */
 public enum UsedCar {
-
+    /**
+     *
+     */
+    CMC("cmc","");
 
 
 
     private String key;
     private String value;
-    private UsedCar(String key, String value) {
+    UsedCar(String key, String value) {
         this.key = key;
         this.value = value;
     }
