@@ -279,8 +279,8 @@ public class LOF {
         }
         for(int i = 0; i < ATRIBUTE_NUMBER; i++) {
             for(int j = 0; j < inputValues.size();j++) {
-                mins[i] = inputValues.get(j)[i] < mins[i] ? inputValues.get(j)[i] : mins[i];
-                maxs[i] = inputValues.get(j)[i] > maxs[i] ? inputValues.get(j)[i] : maxs[i];
+                mins[i] = Math.min(inputValues.get(j)[i], mins[i]);
+                maxs[i] = Math.max(inputValues.get(j)[i], maxs[i]);
             }
         }
         double[] maxsReduceMins = new double[ATRIBUTE_NUMBER];

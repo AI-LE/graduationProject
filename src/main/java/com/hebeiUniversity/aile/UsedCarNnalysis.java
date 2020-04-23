@@ -62,7 +62,7 @@ public class UsedCarNnalysis {
         return list;
     }
 
-    private void distanceK(List<Sample> list, int index){
+    public void distanceK(List<Sample> list, int index){
         //第k距离为从该点向两边扩散
         int left = index - 1;
         //第k距离为从该点向两边扩散
@@ -92,7 +92,7 @@ public class UsedCarNnalysis {
         List<Sample> newList = new ArrayList<>();
     }
 
-    private List<Sample> readFile(String path) throws Exception {
+    public List<Sample> readFile(String path) throws Exception {
         InputStream is = new FileInputStream(path);
         List<Sample> list = new ArrayList<>();
         try{
@@ -123,7 +123,7 @@ public class UsedCarNnalysis {
         return list;
     }
 
-    private List<OneHotSample> readFile2(String path) throws Exception {
+    public List<OneHotSample> readFile2(String path) throws Exception {
         InputStream is = new FileInputStream(path);
         List<OneHotSample> list = new ArrayList<>();
         try{
@@ -135,32 +135,32 @@ public class UsedCarNnalysis {
                 //CSV格式文件为逗号分隔符文件，这里根据逗号切分
                 String item[] = line.split(",");
                 OneHotSample sample = new OneHotSample();
-                sample.setPrice(Integer.valueOf(item[0]));
-                sample.setMileage(Integer.valueOf(item[1]));
-                sample.setYear(Integer.valueOf(item[2]));
+                sample.setPrice(Double.valueOf(item[0]));
+                sample.setMileage(Double.valueOf(item[1]));
+                sample.setYear(Double.valueOf(item[2]));
                 switch (item[3]) {
                     case "ex" :
-                        sample.setTrimEx(1);
+                        sample.setTrimEx(1d);
                         break;
                     case "lx":
-                        sample.setTrimLx(1);
+                        sample.setTrimLx(1d);
                         break;
                     default:
-                        sample.setTrimExl(1);
+                        sample.setTrimExl(1d);
                 }
                 switch (item[4]) {
                     case "4 Cyl" :
-                        sample.setEngine4Cyl(1);
+                        sample.setEngine4Cyl(1d);
                         break;
                     default:
-                        sample.setEngine6Cyl(1);
+                        sample.setEngine6Cyl(1d);
                 }
                 switch (item[5]) {
                     case "Automatic" :
-                        sample.setTransmissionAutomatic(1);
+                        sample.setTransmissionAutomatic(1d);
                         break;
                     default:
-                        sample.setTransmissionManual(1);
+                        sample.setTransmissionManual(1d);
                 }
                 list.add(sample);
             }

@@ -5,107 +5,107 @@ package com.hebeiUniversity.aile;
  * @date 2020/4/20 16:48
  */
 public class OneHotSample {
-    private Integer price;
-    private Integer mileage;
-    private Integer year;
-    private Integer trimEx;
-    private Integer trimLx;
-    private Integer trimExl;
-    private Integer engine4Cyl;
-    private Integer engine6Cyl;
-    private Integer transmissionManual;
-    private Integer transmissionAutomatic;
+    private Double price;
+    private Double mileage;
+    private Double year;
+    private Double trimEx;
+    private Double trimLx;
+    private Double trimExl;
+    private Double engine4Cyl;
+    private Double engine6Cyl;
+    private Double transmissionManual;
+    private Double transmissionAutomatic;
 
     /**
      * 初始化非数值化的 全为0
      */
     public OneHotSample() {
-        trimEx = 0;
-        trimLx = 0;
-        trimExl = 0;
-        engine4Cyl = 0;
-        engine6Cyl = 0;
-        transmissionManual = 0;
-        transmissionAutomatic = 0;
+        trimEx = 0d;
+        trimLx = 0d;
+        trimExl = 0d;
+        engine4Cyl = 0d;
+        engine6Cyl = 0d;
+        transmissionManual = 0d;
+        transmissionAutomatic = 0d;
     }
 
-    public Integer getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Integer price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
-    public Integer getMileage() {
+    public Double getMileage() {
         return mileage;
     }
 
-    public void setMileage(Integer mileage) {
+    public void setMileage(Double mileage) {
         this.mileage = mileage;
     }
 
-    public Integer getYear() {
+    public Double getYear() {
         return year;
     }
 
-    public void setYear(Integer year) {
+    public void setYear(Double year) {
         this.year = year;
     }
 
-    public Integer getTrimEx() {
+    public Double getTrimEx() {
         return trimEx;
     }
 
-    public void setTrimEx(Integer trimEx) {
+    public void setTrimEx(Double trimEx) {
         this.trimEx = trimEx;
     }
 
-    public Integer getTrimLx() {
+    public Double getTrimLx() {
         return trimLx;
     }
 
-    public void setTrimLx(Integer trimLx) {
+    public void setTrimLx(Double trimLx) {
         this.trimLx = trimLx;
     }
 
-    public Integer getTrimExl() {
+    public Double getTrimExl() {
         return trimExl;
     }
 
-    public void setTrimExl(Integer trimExl) {
+    public void setTrimExl(Double trimExl) {
         this.trimExl = trimExl;
     }
 
-    public Integer getEngine4Cyl() {
+    public Double getEngine4Cyl() {
         return engine4Cyl;
     }
 
-    public void setEngine4Cyl(Integer engine4Cyl) {
+    public void setEngine4Cyl(Double engine4Cyl) {
         this.engine4Cyl = engine4Cyl;
     }
 
-    public Integer getEngine6Cyl() {
+    public Double getEngine6Cyl() {
         return engine6Cyl;
     }
 
-    public void setEngine6Cyl(Integer engine6Cyl) {
+    public void setEngine6Cyl(Double engine6Cyl) {
         this.engine6Cyl = engine6Cyl;
     }
 
-    public Integer getTransmissionManual() {
+    public Double getTransmissionManual() {
         return transmissionManual;
     }
 
-    public void setTransmissionManual(Integer transmissionManual) {
+    public void setTransmissionManual(Double transmissionManual) {
         this.transmissionManual = transmissionManual;
     }
 
-    public Integer getTransmissionAutomatic() {
+    public Double getTransmissionAutomatic() {
         return transmissionAutomatic;
     }
 
-    public void setTransmissionAutomatic(Integer transmissionAutomatic) {
+    public void setTransmissionAutomatic(Double transmissionAutomatic) {
         this.transmissionAutomatic = transmissionAutomatic;
     }
 
