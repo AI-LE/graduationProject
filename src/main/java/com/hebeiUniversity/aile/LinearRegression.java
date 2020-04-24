@@ -43,8 +43,7 @@ public class LinearRegression {
         int rowoffile=oneHotSamples.size();
         //获取输入训练数据文本的   列数
         int columnoffile = OneHotSample.class.getDeclaredFields().length;
-        denseX = DenseMatrix.Factory.zeros(rowoffile, columnoffile);
-//        denseXT = DenseMatrix.Factory.zeros(columnoffile, rowoffile);
+        denseX = DenseMatrix.Factory.zeros(rowoffile, columnoffile - 4);
         denseY = DenseMatrix.Factory.zeros(rowoffile, 1);
         loadTrainDataFromFile(rowoffile);
     }
@@ -53,14 +52,14 @@ public class LinearRegression {
         for (int i = 0; i < oneHotSamples.size();i++) {
             denseX.setAsDouble(1.0, i, 0);
             denseX.setAsDouble(oneHotSamples.get(i).getEngine4Cyl(), i, 1);
-            denseX.setAsDouble(oneHotSamples.get(i).getEngine6Cyl(), i, 2);
-            denseX.setAsDouble(oneHotSamples.get(i).getMileage(), i, 3);
-            denseX.setAsDouble(oneHotSamples.get(i).getTransmissionAutomatic(), i, 4);
-            denseX.setAsDouble(oneHotSamples.get(i).getTransmissionManual(), i, 5);
-            denseX.setAsDouble(oneHotSamples.get(i).getTrimEx(), i, 6);
-            denseX.setAsDouble(oneHotSamples.get(i).getTrimExl(), i, 7);
-            denseX.setAsDouble(oneHotSamples.get(i).getTrimLx(), i, 8);
-            denseX.setAsDouble(oneHotSamples.get(i).getYear(), i, 9);
+//            denseX.setAsDouble(oneHotSamples.get(i).getEngine6Cyl(), i, 1);
+            denseX.setAsDouble(oneHotSamples.get(i).getMileage(), i, 2);
+            denseX.setAsDouble(oneHotSamples.get(i).getTransmissionAutomatic(), i, 3);
+//            denseX.setAsDouble(oneHotSamples.get(i).getTransmissionManual(), i, 4);
+            denseX.setAsDouble(oneHotSamples.get(i).getTrimEx(), i, 4);
+            denseX.setAsDouble(oneHotSamples.get(i).getTrimExl(), i, 5);
+//            denseX.setAsDouble(oneHotSamples.get(i).getTrimLx(), i, 7);
+//            denseX.setAsDouble(oneHotSamples.get(i).getYear(), i, 8);
             denseY.setAsDouble(oneHotSamples.get(i).getPrice(), i, 0);
         }
         denseXT = denseX.transpose();
@@ -68,13 +67,17 @@ public class LinearRegression {
 
     public void result(){
         Matrix denseXTX = denseXT.mtimes(denseX);
+//        System.out.println(denseXTX.getRowCount());
+//        System.out.println(denseXTX.transpose().getRowCount());
         Matrix denseXTXInv = denseXTX.inv();
-        Matrix A = denseXT.mtimes(denseY);
-        Matrix AA = denseXTXInv.mtimes(A);
-        System.out.println(AA);
+//        System.out.println(denseXTXInv.getRowCount());
+//        System.out.println(denseXTXInv.transpose().getRowCount());
+        Matrix A = denseXTXInv.mtimes(denseXT);
+        Matrix AA = A.mtimes(denseY);
+//        System.out.println(AA);
 //        Matrix denseXTX = denseXT.mtimes(denseX);
 //        Matrix AA = denseXTX.solve(denseXT.mtimes(denseY));
-//        System.out.println(AA);
+        System.out.println(AA);
     }
 
     public static void main(String[] args) throws Exception {

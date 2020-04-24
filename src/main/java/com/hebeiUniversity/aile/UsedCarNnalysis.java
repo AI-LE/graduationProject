@@ -146,21 +146,21 @@ public class UsedCarNnalysis {
                         sample.setTrimLx(1d);
                         break;
                     default:
-                        sample.setTrimExl(1d);
+                        sample.setTrimExl(0d);
                 }
                 switch (item[4]) {
                     case "4 Cyl" :
                         sample.setEngine4Cyl(1d);
                         break;
                     default:
-                        sample.setEngine6Cyl(1d);
+                        sample.setEngine6Cyl(0d);
                 }
                 switch (item[5]) {
                     case "Automatic" :
                         sample.setTransmissionAutomatic(1d);
                         break;
                     default:
-                        sample.setTransmissionManual(1d);
+                        sample.setTransmissionManual(0d);
                 }
                 list.add(sample);
             }
