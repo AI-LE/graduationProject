@@ -5,34 +5,10 @@ import org.ujmp.core.DenseMatrix;
 import org.ujmp.core.Matrix;
 import java.util.List;
 
-/**
- * @author 艾乐
- */
 public class LinearRegression {
-    /*
-     * 训练数据示例：
-     *   x0        x1        x2        y
-        1.0       1.0       2.0       7.2
-        1.0       2.0       1.0       4.9
-        1.0       3.0       0.0       2.6
-        1.0       4.0       1.0       6.3
-        1.0       5.0      -1.0       1.0
-        1.0       6.0       0.0       4.7
-        1.0       7.0      -2.0      -0.6
-        注意！！！！x1，x2，y三列是用户实际输入的数据，x0是为了推导出来的公式统一，特地补上的一列。
-        x0,x1,x2是“特征”，y是结果
-
-        h(x) = theta0 * x0 + theta1* x1 + theta2 * x2
-
-        theta0,theta1,theta2 是想要训练出来的参数
-
-         此程序采用“梯度下降法”
-
-     *
-     */
 
     Matrix denseX;
-    Matrix denseXT;
+    Matrix denseXt;
     Matrix denseY;
     private List<OneHotSample> oneHotSamples;
 
@@ -43,55 +19,59 @@ public class LinearRegression {
         int rowoffile=oneHotSamples.size();
         //获取输入训练数据文本的   列数
         int columnoffile = OneHotSample.class.getDeclaredFields().length;
+        //去掉某些会造成线性相关的列
         denseX = DenseMatrix.Factory.zeros(rowoffile, columnoffile - 4);
         denseY = DenseMatrix.Factory.zeros(rowoffile, 1);
-        loadTrainDataFromFile(rowoffile);
+        initMatrix();
     }
-    private void loadTrainDataFromFile(int row){
-        //trainData的第一列全部置为1.0（feature x0）
+    private void initMatrix(){
         for (int i = 0; i < oneHotSamples.size();i++) {
             denseX.setAsDouble(1.0, i, 0);
             denseX.setAsDouble(oneHotSamples.get(i).getEngine4Cyl(), i, 1);
-//            denseX.setAsDouble(oneHotSamples.get(i).getEngine6Cyl(), i, 1);
             denseX.setAsDouble(oneHotSamples.get(i).getMileage(), i, 2);
             denseX.setAsDouble(oneHotSamples.get(i).getTransmissionAutomatic(), i, 3);
-//            denseX.setAsDouble(oneHotSamples.get(i).getTransmissionManual(), i, 4);
             denseX.setAsDouble(oneHotSamples.get(i).getTrimEx(), i, 4);
             denseX.setAsDouble(oneHotSamples.get(i).getTrimExl(), i, 5);
-//            denseX.setAsDouble(oneHotSamples.get(i).getTrimLx(), i, 7);
-//            denseX.setAsDouble(oneHotSamples.get(i).getYear(), i, 8);
             denseY.setAsDouble(oneHotSamples.get(i).getPrice(), i, 0);
         }
-        denseXT = denseX.transpose();
+        denseXt = denseX.transpose();
     }
 
     public void result(){
-        Matrix denseXTX = denseXT.mtimes(denseX);
-//        System.out.println(denseXTX.getRowCount());
-//        System.out.println(denseXTX.transpose().getRowCount());
-        Matrix denseXTXInv = denseXTX.inv();
-//        System.out.println(denseXTXInv.getRowCount());
-//        System.out.println(denseXTXInv.transpose().getRowCount());
-        Matrix A = denseXTXInv.mtimes(denseXT);
-        Matrix AA = A.mtimes(denseY);
-//        System.out.println(AA);
-//        Matrix denseXTX = denseXT.mtimes(denseX);
-//        Matrix AA = denseXTX.solve(denseXT.mtimes(denseY));
-        System.out.println(AA);
+        Matrix denseXtX = denseXt.mtimes(denseX);
+        Matrix denseXtXInv = denseXtX.inv();
+        Matrix denseXtXInvXt = denseXtXInv.mtimes(denseXt);
+        Matrix denseXtXInvXtY = denseXtXInvXt.mtimes(denseY);
+        System.out.println("常数项w0："+ denseXtXInvXtY.getAsDouble(0, 0));
+        System.out.println("Engine4Cyl w1："+ denseXtXInvXtY.getAsDouble(1, 0));
+        System.out.println("Mileage w2："+ denseXtXInvXtY.getAsDouble(2, 0));
+        System.out.println("TransmissionAutomatic w3："+ denseXtXInvXtY.getAsDouble(3, 0));
+        System.out.println("TrimEx w4："+ denseXtXInvXtY.getAsDouble(4, 0));
+        System.out.println("TrimExl w5："+ denseXtXInvXtY.getAsDouble(5, 0));
+        int count = 0;
+        for (int i = 0;i < oneHotSamples.size();i++) {
+            OneHotSample oneHotSample = oneHotSamples.get(i);
+            double price = denseXtXInvXtY.getAsDouble(0, 0) +
+                    denseXtXInvXtY.getAsDouble(1, 0) * oneHotSample.getEngine4Cyl() +
+                    denseXtXInvXtY.getAsDouble(2, 0) * oneHotSample.getMileage() +
+                    denseXtXInvXtY.getAsDouble(3, 0) * oneHotSample.getTransmissionAutomatic() +
+                    denseXtXInvXtY.getAsDouble(4, 0) * oneHotSample.getTrimEx() +
+                    denseXtXInvXtY.getAsDouble(5, 0) * oneHotSample.getTrimExl();
+            double abs = Math.abs(price - oneHotSample.getPrice());
+            double allow = denseY.getAsDouble(i, 0) * 0.05;
+            System.out.println(price);
+            System.out.println(abs);
+            System.out.println(allow);
+            if (abs  > denseY.getAsDouble(i, 0) * 0.05) {
+                count++;
+            }
+            System.out.println();
+        }
+        System.out.println(count);
     }
 
     public static void main(String[] args) throws Exception {
-        // TODO Auto-generated method stub
         LinearRegression m = new LinearRegression();
-
         m.result();
-//        m.printTrainData();
-//        for (int i = 0; i < m.XT.length; i++) {
-//            for (int i1 = 0; i1 < m.XT[i].length; i1++) {
-//                System.out.printf(m.XT[i][i1]+" ");
-//            }
-//        }
-//        m.printTheta();
     }
-
 }
