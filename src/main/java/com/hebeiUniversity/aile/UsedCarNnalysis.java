@@ -160,7 +160,7 @@ public class UsedCarNnalysis {
                         sample.setTransmissionAutomatic(1d);
                         break;
                     default:
-                        sample.setTransmissionManual(1d);
+                        sample.setTransmissionManual(-1d);
                 }
                 list.add(sample);
             }

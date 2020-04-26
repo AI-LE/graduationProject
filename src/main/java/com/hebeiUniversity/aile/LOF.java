@@ -46,7 +46,7 @@ public class LOF {
 		lof.gridSearch(2, 40, targetIndices, data);*/
     }
     //读取数据
-    private static ArrayList<double[]> readFile(String fileAdd) throws IOException {
+    private static ArrayList<double[]> readFile(String fileAdd) throws Exception {
         ArrayList<double[]> arrayList = new ArrayList<>();
         File file = new File(fileAdd);
         BufferedReader reader = null;
@@ -64,7 +64,13 @@ public class LOF {
                 arrayList.add(array);
             }
             reader.close();
-            return arrayList;
+            UsedCarNnalysis usedCarNnalysis = new UsedCarNnalysis();
+            List<OneHotSample> oneHotSamples = usedCarNnalysis.readFile2("汽车价格离群值检测/dataset/accord_sedan_training.csv");
+            ArrayList<double[]> data = new ArrayList<double[]>();
+            for (OneHotSample oneHotSample : oneHotSamples) {
+                data.add(new double[]{oneHotSample.getPrice(), oneHotSample.getMileage()});
+            }
+            return data;
         } catch (IOException e) {
             e.printStackTrace();
         } finally {

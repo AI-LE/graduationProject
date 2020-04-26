@@ -7,6 +7,7 @@ import java.lang.Math;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.List;
 import java.util.stream.IntStream;
 
 
@@ -280,23 +281,16 @@ public class NewLOF {
 	}
 	
 	
-	public static void main(String[] args){
+	public static void main(String[] args) throws Exception {
 		
 		int kNN = 5;
-		
+		UsedCarNnalysis usedCarNnalysis = new UsedCarNnalysis();
+		List<OneHotSample> oneHotSamples = usedCarNnalysis.readFile2("汽车价格离群值检测/dataset/accord_sedan_training.csv");
 		ArrayList<double[]> data = new ArrayList<double[]>();
-		data.add(new double[]{0, 0});
-		data.add(new double[]{0, 1});
-		data.add(new double[]{1, 0});
-		data.add(new double[]{1, 1});
-		data.add(new double[]{1, 2});
-		data.add(new double[]{2, 1});
-		data.add(new double[]{2, 2});
-		data.add(new double[]{2, 0});
-		data.add(new double[]{2, 0});
-		data.add(new double[]{2, 0});
-		data.add(new double[]{2, 0});
-		
+		for (OneHotSample oneHotSample : oneHotSamples) {
+			data.add(new double[]{oneHotSample.getPrice(), oneHotSample.getMileage()});
+		}
+
 		NewLOF model = new NewLOF(data);
 		
 		
