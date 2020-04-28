@@ -1,4 +1,4 @@
-package com.hebeiUniversity.aile;
+package com.hbu.aile;
 
 /**
  * @author aile
@@ -92,8 +92,7 @@ public class UsedCarNnalysis {
         List<Sample> newList = new ArrayList<>();
     }
 
-    public List<Sample> readFile(String path) throws Exception {
-        InputStream is = new FileInputStream(path);
+    public List<Sample> readFile(String path){
         List<Sample> list = new ArrayList<>();
         try{
             //换成你的文件名
@@ -109,14 +108,6 @@ public class UsedCarNnalysis {
             }
         } catch (Exception  e){
             System.out.println("文件转换出错:" + e);
-        } finally {
-            if (is != null) {
-                try {
-                    is.close();
-                } catch (Exception e){
-                    System.out.println("输入流关闭异常");
-                }
-            }
         }
         //从小到大排序
         Collections.sort(list);

@@ -1,4 +1,4 @@
-package com.hebeiUniversity.aile;
+package com.hbu.aile;
 
 import java.math.BigDecimal;
 import java.util.List;

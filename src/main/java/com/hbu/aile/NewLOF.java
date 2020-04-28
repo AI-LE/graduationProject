@@ -1,7 +1,7 @@
 /**
  * 
  */
-package com.hebeiUniversity.aile;
+package com.hbu.aile;
 
 import java.lang.Math;
 import java.util.ArrayList;
@@ -283,7 +283,7 @@ public class NewLOF {
 	
 	public static void main(String[] args) throws Exception {
 		
-		int kNN = 5;
+		int kNN = 10;
 		UsedCarNnalysis usedCarNnalysis = new UsedCarNnalysis();
 		List<OneHotSample> oneHotSamples = usedCarNnalysis.readFile2("汽车价格离群值检测/dataset/accord_sedan_training.csv");
 		ArrayList<double[]> data = new ArrayList<double[]>();
@@ -296,23 +296,32 @@ public class NewLOF {
 		
 		System.out.println("LOF values on training examples");
 		double[] scores = model.getTrainingScores(kNN);
+		int count = 0;
+		int flag = 1;
 		for(int i = 0; i < scores.length; i++){
-			System.out.println(Arrays.toString(data.get(i)) + "\t" + scores[i]);
+			System.out.print(Arrays.toString(data.get(i)) + "\t" + scores[i] + "\t");
+			if (scores[i] > 1.5) {
+				count++;
+			}
+			if (flag++ % 3 == 0) {
+				System.out.println();
+			}
 		}
+		System.out.println(count);
 		
-		System.out.println("\nTest examples");
-		double[] testSample = new double[]{2, 0};
-		System.out.println(model.getScore(testSample, kNN));
-		System.out.println(model.getScore(new double[]{0, 0}, kNN));
-		System.out.println(model.getScore(new double[]{10, 4}, kNN));
-		
-
-		System.out.println("\nNeighbors of "+Arrays.toString(testSample));
-		ArrayList<double[]> neighbors = model.getNeighbors(testSample, kNN);
-		for(double[] n : neighbors){
-			System.out.println(Arrays.toString(n));
-		}
+//		System.out.println("\nTest examples");
+//		double[] testSample = new double[]{2, 0};
+//		System.out.println(model.getScore(testSample, kNN));
+//		System.out.println(model.getScore(new double[]{0, 0}, kNN));
+//		System.out.println(model.getScore(new double[]{10, 4}, kNN));
+//
+//
+//		System.out.println("\nNeighbors of "+Arrays.toString(testSample));
+//		ArrayList<double[]> neighbors = model.getNeighbors(testSample, kNN);
+//		for(double[] n : neighbors){
+//			System.out.println(Arrays.toString(n));
+//		}
 			
 	}
 	
-}
+ }

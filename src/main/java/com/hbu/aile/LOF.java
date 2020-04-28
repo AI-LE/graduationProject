@@ -1,4 +1,4 @@
-package com.hebeiUniversity.aile;
+package com.hbu.aile;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -28,7 +28,13 @@ public class LOF {
         //设置维度之间分隔符及维度数量
         ITEM_SPLIT = ",";
         ATRIBUTE_NUMBER = 4;
-        ArrayList<double[]> data = readFile("data/iris.txt");
+        UsedCarNnalysis usedCarNnalysis = new UsedCarNnalysis();
+        List<OneHotSample> oneHotSamples = usedCarNnalysis.readFile2("汽车价格离群值检测/dataset/accord_sedan_training.csv");
+        ArrayList<double[]> data = new ArrayList<>();
+        for (OneHotSample oneHotSample : oneHotSamples) {
+            data.add(new double[]{oneHotSample.getPrice(), oneHotSample.getMileage()});
+        }
+//        ArrayList<double[]> data = readFile("data/iris.txt");
         dataNormalize(data);
         LOF lof = new LOF();
         int k = 9;

@@ -1,6 +1,5 @@
-package com.hebeiUniversity.aile;
+package com.hbu.aile;
 
-import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -12,13 +11,13 @@ import java.util.List;
 public class MyLOF {
 
     class Point {
-        //点的下标，用于定位某个点
-        int index;
+        double price;
+        double mileage;
         //p点的第K距离
         double dk_p = 0;
         //p点第k距离领域内的点的个数
         int Nk_p = 0;
-        //p的可达距离
+        //p的第k距离领域内素有点的可达距离之和
         double reach_dist;
         //记录在第k距离内领域的点的下标
         List<Integer> NkIndexs = new ArrayList<>();
@@ -42,13 +41,17 @@ public class MyLOF {
         localReachabilityDensity();
         localOutlierFactor();
         int count = 0;
+        int flag = 1;
         for (Point point : points) {
-            if (point.lof < 1) {
+            if (point.lof > 1.5) {
+                System.out.print("[" + point.price + "," + point.mileage +"]\t" + point.lof + "\t");
                 count++;
+                if (flag++ % 3 == 0) {
+                    System.out.println();
+                }
             }
-            System.out.println(point.lof);
         }
-        System.out.println(count);
+        System.out.println("异常点个数：" + count);
     }
 
     private List<double[]> sample;
@@ -66,10 +69,7 @@ public class MyLOF {
                     continue;
                 }
                 double temp = Math.pow(sample.get(i)[0] - sample.get(j)[0], 2) + Math.pow(sample.get(i)[1] - sample.get(j)[1], 2);
-                //点i和点J之间的距离,保留两位小数
-                DecimalFormat df = new DecimalFormat("#.00");
-                temp = Math.sqrt(temp);
-                distance[i][j] = Double.parseDouble(df.format(temp));
+                distance[i][j] = Math.sqrt(temp);
             }
         }
     }
@@ -82,8 +82,8 @@ public class MyLOF {
         for (int i = 0;i < sample.size();i++) {
             double[] p_distance = distance[i].clone();
             Arrays.sort(p_distance);
-            //第k距离k选10
-            double dk_p = p_distance[10];
+            //第k距离k选9
+            double dk_p = p_distance[9];
             Point point = new Point();
             point.dk_p = dk_p;
             for (int k = 0;k < distance[i].length;k++) {
@@ -94,6 +94,8 @@ public class MyLOF {
                     point.NkIndexs.add(k);
                 }
             }
+            point.price = sample.get(i)[0];
+            point.mileage = sample.get(i)[1];
             point.Nk_p = point.NkIndexs.size();
             points.add(point);
         }
@@ -105,9 +107,9 @@ public class MyLOF {
     private void reach_distance() {
         for (int i = 0;i < points.size();i++) {
             double reach_distance = 0;
-            List<Integer> tempNkIndexs = points.get(i).NkIndexs;
-            for (int j = 0;j < tempNkIndexs.size();j++) {
-                reach_distance += Math.max(distance[tempNkIndexs.get(j)][i], points.get(tempNkIndexs.get(j)).dk_p);
+            List<Integer> tempNkIndexes = points.get(i).NkIndexs;
+            for (int j = 0;j < tempNkIndexes.size();j++) {
+                reach_distance += Math.max(distance[tempNkIndexes.get(j)][i], points.get(tempNkIndexes.get(j)).dk_p);
             }
             points.get(i).reach_dist = reach_distance;
         }

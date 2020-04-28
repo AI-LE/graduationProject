@@ -1,4 +1,4 @@
-package com.hebeiUniversity.aile;
+package com.hbu.aile;
 
 /**
  * @author aile
