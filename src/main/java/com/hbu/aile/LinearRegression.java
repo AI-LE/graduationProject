@@ -4,7 +4,9 @@ package com.hbu.aile;
 import org.ujmp.core.DenseMatrix;
 import org.ujmp.core.Matrix;
 
+import java.lang.reflect.Method;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 
 public class LinearRegression {
@@ -23,7 +25,7 @@ public class LinearRegression {
         //获取输入训练数据文本的   列数
         int columnoffile = OneHotSample.class.getDeclaredFields().length;
         //去掉某些会造成线性相关的列
-        denseX = DenseMatrix.Factory.zeros(rowoffile, columnoffile - 4);
+        denseX = DenseMatrix.Factory.zeros(rowoffile, columnoffile - 1);
         denseY = DenseMatrix.Factory.zeros(rowoffile, 1);
         initMatrix();
     }
@@ -40,12 +42,14 @@ public class LinearRegression {
             str[3] = "getTrimEx";
             denseX.setAsDouble(oneHotSamples.get(i).getTrimExl(), i, 5);
             str[4] = "getTrimExl";
-//            denseX.setAsDouble(oneHotSamples.get(i).getEngine6Cyl(), i, 6);
-//            str[5] = "getEngine6Cyl";
-//            denseX.setAsDouble(oneHotSamples.get(i).getTransmissionManual(), i, 7);
-//            str[6] = "getTransmissionManual";
-//            denseX.setAsDouble(oneHotSamples.get(i).getTrimLx(), i, 8);
-//            str[7] = "getTrimLx";
+            denseX.setAsDouble(oneHotSamples.get(i).getEngine6Cyl(), i, 6);
+            str[5] = "getEngine6Cyl";
+            denseX.setAsDouble(oneHotSamples.get(i).getTransmissionManual(), i, 7);
+            str[6] = "getTransmissionManual";
+            denseX.setAsDouble(oneHotSamples.get(i).getTrimLx(), i, 8);
+            str[7] = "getTrimLx";
+            denseX.setAsDouble(oneHotSamples.get(i).getYear(), i, 9);
+            str[8] = "getYear";
             denseY.setAsDouble(oneHotSamples.get(i).getPrice(), i, 0);
         }
         denseXt = denseX.transpose();
@@ -54,26 +58,42 @@ public class LinearRegression {
     public void result() throws Exception {
 
         Matrix denseXtX = denseXt.mtimes(denseX);
-        Matrix denseXtXInv = denseXtX.inv();
+        Matrix denseXtXInv = denseXtX.pinv();
         Matrix denseXtXInvXt = denseXtXInv.mtimes(denseXt);
         Matrix denseXtXInvXtY = denseXtXInvXt.mtimes(denseY);
-        System.out.println(denseXtXInvXtY);
         for (int i = 0; i < denseXtXInvXtY.getRowCount();i++){
             System.out.println(denseXtXInvXtY.getAsDouble(i, 0));
+            if (str[i] != null)
+            System.out.print(str[i].substring(3) + " : ");
         }
         int count = 0;
-        double[] deviations = new double[oneHotSamples.size()];
         for (int i = 0;i < oneHotSamples.size();i++) {
             OneHotSample oneHotSample = oneHotSamples.get(i);
             double price = denseXtXInvXtY.getAsDouble(0, 0);
             for (int j = 0; j < denseXtXInvXtY.getRowCount() - 1;j++) {
                 price += denseXtXInvXtY.getAsDouble(j+1, 0) *
-                        (Double)oneHotSample.getClass().getMethod(str[j]).invoke(oneHotSample);
+                        (Double)OneHotSample.class.getMethod(str[j]).invoke(oneHotSample);
             }
-            deviations[i] = Math.abs(price - oneHotSample.getPrice());
+            oneHotSample.setDeviation(Math.abs(price - oneHotSample.getPrice()));
         }
-        Arrays.sort(deviations);
-        System.out.println(count);
+        Collections.sort(oneHotSamples);
+        double deviation = oneHotSamples.get((int)(oneHotSamples.size() * 0.95)).getDeviation();
+        System.out.println(oneHotSamples.get((int)(oneHotSamples.size() * 0.90)).getDeviation() + "111111111111111111111111");
+        System.out.println(oneHotSamples.get((int)(oneHotSamples.size() * 0.85)).getDeviation() + "111111111111111111111111");
+        System.out.println(oneHotSamples.get((int)(oneHotSamples.size() * 0.80)).getDeviation() + "111111111111111111111111");
+        System.out.println(oneHotSamples.get((int)(oneHotSamples.size() * 0.5)).getDeviation() + "111111111111111111111111");
+        Class oneHotSampleClass = OneHotSample.class;
+        for (OneHotSample oneHotSample : oneHotSamples) {
+            if (oneHotSample.getDeviation() > deviation) {
+                System.out.print(oneHotSample.getPrice() + "\t" + oneHotSample.getMileage() + "\t");
+                System.out.println();
+                for (String s : str) {
+                    if (!(s == null || "".equals(s))) {
+                        Method method = oneHotSampleClass.getMethod(s);
+                    }
+                }
+            }
+        }
     }
 
     public static void main(String[] args) throws Exception {

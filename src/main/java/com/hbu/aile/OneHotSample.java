@@ -4,7 +4,7 @@ package com.hbu.aile;
  * @author aile
  * @date 2020/4/20 16:48
  */
-public class OneHotSample {
+public class OneHotSample implements Comparable<OneHotSample>{
     private Double price;
     private Double mileage;
     private Double year;
@@ -15,6 +15,7 @@ public class OneHotSample {
     private Double engine6Cyl;
     private Double transmissionManual;
     private Double transmissionAutomatic;
+    private Double deviation;
 
     /**
      * 初始化非数值化的 全为0
@@ -109,6 +110,14 @@ public class OneHotSample {
         this.transmissionAutomatic = transmissionAutomatic;
     }
 
+    public Double getDeviation() {
+        return deviation;
+    }
+
+    public void setDeviation(Double deviation) {
+        this.deviation = deviation;
+    }
+
     @Override
     public String toString() {
         return "OneHotSample{" +
@@ -123,5 +132,10 @@ public class OneHotSample {
                 ", transmissionManual=" + transmissionManual +
                 ", transmissionAutomatic=" + transmissionAutomatic +
                 '}';
+    }
+
+    @Override
+    public int compareTo(OneHotSample o) {
+        return (int)(this.deviation - o.deviation);
     }
 }
