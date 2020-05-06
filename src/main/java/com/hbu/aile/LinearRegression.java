@@ -14,7 +14,6 @@ public class LinearRegression {
     Matrix denseX;
     Matrix denseXt;
     Matrix denseY;
-    String[] str = new String[10];
     private List<OneHotSample> oneHotSamples;
 
     public LinearRegression() throws Exception {
@@ -33,23 +32,14 @@ public class LinearRegression {
         for (int i = 0; i < oneHotSamples.size();i++) {
             denseX.setAsDouble(1.0, i, 0);
             denseX.setAsDouble(oneHotSamples.get(i).getEngine4Cyl(), i, 1);
-            str[0] = "getEngine4Cyl";
             denseX.setAsDouble(oneHotSamples.get(i).getMileage(), i, 2);
-            str[1] = "getMileage";
             denseX.setAsDouble(oneHotSamples.get(i).getTransmissionAutomatic(), i, 3);
-            str[2] = "getTransmissionAutomatic";
             denseX.setAsDouble(oneHotSamples.get(i).getTrimEx(), i, 4);
-            str[3] = "getTrimEx";
             denseX.setAsDouble(oneHotSamples.get(i).getTrimExl(), i, 5);
-            str[4] = "getTrimExl";
             denseX.setAsDouble(oneHotSamples.get(i).getEngine6Cyl(), i, 6);
-            str[5] = "getEngine6Cyl";
             denseX.setAsDouble(oneHotSamples.get(i).getTransmissionManual(), i, 7);
-            str[6] = "getTransmissionManual";
             denseX.setAsDouble(oneHotSamples.get(i).getTrimLx(), i, 8);
-            str[7] = "getTrimLx";
             denseX.setAsDouble(oneHotSamples.get(i).getYear(), i, 9);
-            str[8] = "getYear";
             denseY.setAsDouble(oneHotSamples.get(i).getPrice(), i, 0);
         }
         denseXt = denseX.transpose();
@@ -61,39 +51,7 @@ public class LinearRegression {
         Matrix denseXtXInv = denseXtX.pinv();
         Matrix denseXtXInvXt = denseXtXInv.mtimes(denseXt);
         Matrix denseXtXInvXtY = denseXtXInvXt.mtimes(denseY);
-        for (int i = 0; i < denseXtXInvXtY.getRowCount();i++){
-            System.out.println(denseXtXInvXtY.getAsDouble(i, 0));
-            if (str[i] != null)
-            System.out.print(str[i].substring(3) + " : ");
-        }
-        int count = 0;
-        for (int i = 0;i < oneHotSamples.size();i++) {
-            OneHotSample oneHotSample = oneHotSamples.get(i);
-            double price = denseXtXInvXtY.getAsDouble(0, 0);
-            for (int j = 0; j < denseXtXInvXtY.getRowCount() - 1;j++) {
-                price += denseXtXInvXtY.getAsDouble(j+1, 0) *
-                        (Double)OneHotSample.class.getMethod(str[j]).invoke(oneHotSample);
-            }
-            oneHotSample.setDeviation(Math.abs(price - oneHotSample.getPrice()));
-        }
-        Collections.sort(oneHotSamples);
-        double deviation = oneHotSamples.get((int)(oneHotSamples.size() * 0.95)).getDeviation();
-        System.out.println(oneHotSamples.get((int)(oneHotSamples.size() * 0.90)).getDeviation() + "111111111111111111111111");
-        System.out.println(oneHotSamples.get((int)(oneHotSamples.size() * 0.85)).getDeviation() + "111111111111111111111111");
-        System.out.println(oneHotSamples.get((int)(oneHotSamples.size() * 0.80)).getDeviation() + "111111111111111111111111");
-        System.out.println(oneHotSamples.get((int)(oneHotSamples.size() * 0.5)).getDeviation() + "111111111111111111111111");
-        Class oneHotSampleClass = OneHotSample.class;
-        for (OneHotSample oneHotSample : oneHotSamples) {
-            if (oneHotSample.getDeviation() > deviation) {
-                System.out.print(oneHotSample.getPrice() + "\t" + oneHotSample.getMileage() + "\t");
-                System.out.println();
-                for (String s : str) {
-                    if (!(s == null || "".equals(s))) {
-                        Method method = oneHotSampleClass.getMethod(s);
-                    }
-                }
-            }
-        }
+        System.out.println(denseXtXInvXtY);
     }
 
     public static void main(String[] args) throws Exception {
